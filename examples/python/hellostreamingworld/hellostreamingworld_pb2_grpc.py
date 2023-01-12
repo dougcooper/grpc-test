@@ -5,7 +5,7 @@ import grpc
 import hellostreamingworld_pb2 as hellostreamingworld__pb2
 
 
-class MultiGreeterStub(object):
+class GreeterStub(object):
     """The greeting service definition.
     """
 
@@ -15,18 +15,18 @@ class MultiGreeterStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.sayHello = channel.unary_stream(
-                '/hellostreamingworld.MultiGreeter/sayHello',
+        self.SayHello = channel.unary_stream(
+                '/greet.Greeter/SayHello',
                 request_serializer=hellostreamingworld__pb2.HelloRequest.SerializeToString,
                 response_deserializer=hellostreamingworld__pb2.HelloReply.FromString,
                 )
 
 
-class MultiGreeterServicer(object):
+class GreeterServicer(object):
     """The greeting service definition.
     """
 
-    def sayHello(self, request, context):
+    def SayHello(self, request, context):
         """Sends multiple greetings
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -34,26 +34,26 @@ class MultiGreeterServicer(object):
         raise NotImplementedError('Method not implemented!')
 
 
-def add_MultiGreeterServicer_to_server(servicer, server):
+def add_GreeterServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'sayHello': grpc.unary_stream_rpc_method_handler(
-                    servicer.sayHello,
+            'SayHello': grpc.unary_stream_rpc_method_handler(
+                    servicer.SayHello,
                     request_deserializer=hellostreamingworld__pb2.HelloRequest.FromString,
                     response_serializer=hellostreamingworld__pb2.HelloReply.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'hellostreamingworld.MultiGreeter', rpc_method_handlers)
+            'greet.Greeter', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
  # This class is part of an EXPERIMENTAL API.
-class MultiGreeter(object):
+class Greeter(object):
     """The greeting service definition.
     """
 
     @staticmethod
-    def sayHello(request,
+    def SayHello(request,
             target,
             options=(),
             channel_credentials=None,
@@ -63,7 +63,7 @@ class MultiGreeter(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_stream(request, target, '/hellostreamingworld.MultiGreeter/sayHello',
+        return grpc.experimental.unary_stream(request, target, '/greet.Greeter/SayHello',
             hellostreamingworld__pb2.HelloRequest.SerializeToString,
             hellostreamingworld__pb2.HelloReply.FromString,
             options, channel_credentials,

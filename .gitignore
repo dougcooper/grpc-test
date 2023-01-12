@@ -180,3 +180,5 @@ iwyu_build/
 # fuzzer logs
 fuzz-*.log
 
+**/.venv/*
+
