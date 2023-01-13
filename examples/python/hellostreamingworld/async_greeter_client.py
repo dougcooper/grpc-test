@@ -22,18 +22,21 @@ import hellostreamingworld_pb2_grpc
 
 
 async def run() -> None:
-    async with grpc.aio.insecure_channel("localhost:50051") as channel:
-        stub = hellostreamingworld_pb2_grpc.MultiGreeterStub(channel)
+    async with grpc.aio.insecure_channel("localhost:5001") as channel:
+        stub = hellostreamingworld_pb2_grpc.GreeterStub(channel)
 
-        # Read from an async generator
-        async for response in stub.sayHello(
-            hellostreamingworld_pb2.HelloRequest(name="you")):
-            print("Greeter client received from async generator: " +
-                  response.message)
+        # # Read from an async generator
+        # async for response in stub.sayHello(
+        #     hellostreamingworld_pb2.HelloRequest(name="you")):
+        #     print("Greeter client received from async generator: " +
+        #           response.message)
 
         # Direct read from the stub
-        hello_stream = stub.sayHello(
+        hello_stream = stub.SayHello(
             hellostreamingworld_pb2.HelloRequest(name="you"))
+
+        print("we have a stream")
+
         while True:
             response = await hello_stream.read()
             if response == grpc.aio.EOF:
